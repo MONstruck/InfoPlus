@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<title>City Infotmation </title>
+<style type="text/css" >
+/*table */
+table{
+ border-collapse: collapse;
+}
+table th,table td{
+ padding: 3px;
+}
+table th:hover{
+ cursor: pointer;
+}
+.arrow-down:after,.arrow-up:after{
+ content: ' ';
+ position: relative;
+ left: 2px;
+ border: 8px solid transparent;
+}
+.arrow-down:after{
+ top: 10px;
+ border-top-color: black;
+}
+.arrow-up:after{
+ bottom: 15px;
+ border-bottom-color: black;
+}
+.arrow-down,.arrow-up{
+ padding-right: 10px;
+}
+</style>
+</head>
+<body>
+<div class="container" ng-app="InfoCity" ng-controller="MyCtr">
+<center>
+<br>
+<h2>Classifier of objects of administrative-territorial construction of Ukraine</h2>
+<br>
+</center>
+<label class="float-left" for="myInput"> Please write keywords/numbers for search information</label>
+<input class=" w-100 form-control" id="myInput" type="text" placeholder="Search..">
+<br>
+<div>
+<button class="w-25 btn btn-success" data-target="#addNewRecordModal" data-toggle="modal" >Add New Record</button>
+</div>
+<br> 
+<div>
+<button class="w-25 col-offset-6 btn btn-danger" ng-click="expportToPdf()">Export to PDF</button>
+</div>
+<br>
+ <table id="informTable" class="table table-bordered table-striped" >
+ <thead>
+  <tr>
+     <th ng-click='sortColumn("id")' ng-class='sortClass("id")' scope="col">#</th>
+      <th ng-click='sortColumn("firstLevel")' ng-class='sortClass("firstLevel")' scope="col">First Level</th>
+      <th ng-click='sortColumn("secondLevel")' ng-class='sortClass("secondLevel")' scope="col">Second Level</th>
+      <th ng-click='sortColumn("thirdLevel")' ng-class='sortClass("thirdLevel")' scope="col">Thrid Level</th>
+      <th ng-click='sortColumn("fourthLevel")' ng-class='sortClass("fourthLevel")'scope="col">Fourth Level</th>
+      <th ng-click='sortColumn("category")' ng-class='sortClass("category")'scope="col">Category</th>
+      <th ng-click='sortColumn("name")' ng-class='sortClass("name")' scope="col">Name Of The Object In Ukrainian</th>
+	  <th id="delCol" scope="col">Delete</th>
+	  <th id="delCol" scope="col">Edit</th>
+  </tr>
+  </thead>
+  <tbody id="myTable">
+  <tr ng-repeat="x in records |orderBy:column:reverse">
+  <th scope="row">{{ x.id }}</td>
+    <td>{{ x.firstLevel}}</td>
+	<td>{{ x.secondLevel}}</td>
+	<td>{{ x.thirdLevel}}</td>
+	<td>{{ x.fourthLevel}}</td>
+	<td>{{ x.category}}</td>
+	<td>{{ x.nameOfTheObjectInUkrainian}}</td>
+	<td id="delCol" ><input class="btn btn-danger" ng-click="deleteRecord(x.id)" type="submit" value="Delete"></td>
+	<td id="delCol" ><input class="btn btn-primary"ng-click="getRecord(x)" data-target="#updateModal" data-toggle="modal" type="submit" value="Update"></td>
+	</tr>
+  </tbody>
+</table>
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">Change Object Name</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	  <h6> Object name </h6>
+	  <br>
+        <input class="form-control w-75" type="text" ng-model="nameOfObject" />
+      <br>
+	  </div>
+      <div class="modal-footer">
+	  <button type="button" ng-click="upddateRecord()" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		</div>
+    </div>
+  </div>
+  </div>
+<div class="modal fade" id="addNewRecordModal" tabindex="-1" role="dialog" aria-labelledby="addNewRecordModalLabel" aria-hidden="true">
+<form>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Object</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	<div ng-model="newRecord" class="modal-body">
+		<div class="form-group">
+			<label class="font-weight-bold" for="firstLevel"> First Level: </label>
+			<div id="firstLevelAlert" class="alert alert-danger" role="alert">
+				<strong>Oh!</strong>This field is required!
+			</div>
+			<input id="firstLevel" ng-click="hideAlert()" onkeypress='validate(event)' ng-model="newRecord.firstLevel" ng-init="newRecord.firstLevel=''" class="form-control" type="text" ng-model="nameOfObject" />
+		</div>
+			<div class="form-group">
+		<label class="font-weight-bold" for="secondLevel"> Second Level: </label>
+			<input id="secondLevel" onkeypress='validate(event)' ng-model="newRecord.secondLevel" ng-init="newRecord.secondLevel=''"  class="form-control" type="text" ng-model="nameOfObject" />
+		</div>
+			<div class="form-group">
+		<label class="font-weight-bold" for="thirdLevel"> Thrid Level: </label>
+			<input id="thirdLevel" onkeypress='validate(event)' ng-model="newRecord.thirdLevel" ng-init="newRecord.thirdLevel=''"  class="form-control" type="text" ng-model="nameOfObject" />
+		</div>
+			<div class="form-group">
+		<label class="font-weight-bold" for="fourthLevel"> Fourth Level:</label>
+			<input id="fourthLevel" onkeypress='validate(event)' ng-model="newRecord.fourthLevel" ng-init="newRecord.fourthLevel=''"  class="form-control" type="text" ng-model="nameOfObject" />
+		</div>
+			<div class="form-group">
+		<label class="font-weight-bold" for="category"> Category: </label>
+			<input id="category" ng-model="newRecord.category" ng-init="newRecord.category=''"  class="form-control" type="text" ng-model="nameOfObject" />
+		</div>
+		<div class="form-group">
+			<label class="font-weight-bold" required for="objectName"> Object name: </label>
+				<div id="categoryAlert" class="alert alert-danger" role="alert">
+					<strong>Oh!</strong>This field is required!
+				</div>
+			<input id="objectName" ng-click="hideAlert()" ng-model="newRecord.nameOfTheObjectInUkrainian"  ng-init="newRecord.nameOfTheObjectInUkrainian=''"  class="form-control" type="text" ng-model="nameOfObject" />
+		</div> 
+      </div>
+      <div class="modal-footer">
+	  <input type="submit" ng-click="addNewRecord()" class="btn btn-success" value="Add Record">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script>
+function validate(evt) {
+  var theEvent = evt || window.event;
+  var key = theEvent.keyCode || theEvent.which;
+  key = String.fromCharCode( key );
+  var regex = /[0-9]|\./;
+  if( !regex.test(key) ) {
+    theEvent.returnValue = false;
+    if(theEvent.preventDefault) theEvent.preventDefault();
+  }
+}
+$(document).ready(function(){
+	$("#firstLevelAlert*").hide();
+	$("#categoryAlert*").hide();
+	
+	$("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+    angular.module("InfoCity", [])
+        .controller("MyCtr", function($scope,$http){
+		var apiURL = "https://localhost:44374/api/infoplus/";
+			$scope.hideAlert = function(){
+				$("#firstLevelAlert*").hide();
+				$("#categoryAlert*").hide();
+			}
+			
+			$scope.column = 'id';
+			$scope.reverse = false; 
+		 
+			$scope.expportToPdf = function(){
+				$("#delCol*").hide();
+
+				html2canvas(document.getElementById('informTable'), {
+					onrendered: function (canvas) {
+						$("#delCol*").show();
+						var data = canvas.toDataURL();
+						var docDefinition = {
+							content: [{
+								image: data,
+								width: 525,
+							}]
+						};
+						pdfMake.createPdf(docDefinition).download("resultList.pdf");
+					}
+				});
+			}
+			
+			$scope.sortColumn = function(col){
+				$scope.column = col;
+				if($scope.reverse){
+					$scope.reverse = false;
+					$scope.reverseclass = 'arrow-up';
+				}else{
+					$scope.reverse = true;
+					$scope.reverseclass = 'arrow-down';
+				}	
+			};
+ 
+			$scope.sortClass = function(col){
+				if($scope.column == col ){
+					if($scope.reverse){
+						return 'arrow-down'; 
+					}else{
+						return 'arrow-up';
+					}
+				}else{
+					return '';
+				}
+			} 		
+			
+			$scope.loadData = function(){
+				$http.get(apiURL)
+				.then(function (response) {
+					$scope.records = response.data;
+						return response.data;
+				}); 
+			}
+		
+			var data = $scope.loadData();
+			var record;
+		
+			 $scope.deleteRecord = function(id){
+				$http.delete(apiURL + id)
+				.then(function (response) {
+					$scope.loadData();	
+					}); 
+			 }
+			 
+			 $scope.upddateRecord = function(){
+				record.nameOfTheObjectInUkrainian= $scope.nameOfObject;
+				$http.put(apiURL + record.id,record)
+				.then(function (response) {
+				$("#updateModal").modal('hide');
+					record = "";
+				}); 
+			 };
+			 
+			$scope.addNewRecord = function(){
+				let record = $scope.newRecord
+				if(record.firstLevel == "") {
+					$("#firstLevelAlert*").show();
+					return;
+				}
+				 else if(record.nameOfTheObjectInUkrainian == "") 
+				{
+					$("#categoryAlert*").show();
+					return;
+				}
+				$http.post(apiURL, record)
+				.then(function (response) {
+					$scope.loadData();
+					$("#addNewRecordModal").modal('hide');
+				}); 
+			}
+			
+			 $scope.getRecord = function(x){
+				record = x;
+				$scope.nameOfObject = record.nameOfTheObjectInUkrainian;
+			 };
+	});
+</script>
+</body>
+</html>

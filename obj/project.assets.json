@@ -11886,11 +11886,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\fyrca\\source\\repos\\InfoPlus\\InfoPlus.csproj",
+      "projectUniqueName": "D:\\Project\\InfoPlus\\InfoPlus\\InfoPlus.csproj",
       "projectName": "InfoPlus",
-      "projectPath": "C:\\Users\\fyrca\\source\\repos\\InfoPlus\\InfoPlus.csproj",
+      "projectPath": "D:\\Project\\InfoPlus\\InfoPlus\\InfoPlus.csproj",
       "packagesPath": "C:\\Users\\fyrca\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fyrca\\source\\repos\\InfoPlus\\obj\\",
+      "outputPath": "D:\\Project\\InfoPlus\\InfoPlus\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

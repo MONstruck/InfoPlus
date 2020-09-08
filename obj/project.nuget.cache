@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zyphkbWb7updtjw7IPKQpG5b+wIZnnfMPwdaxsh6ufDVd33VPman8/EsWPYjfU7fpLE+tBvhd3jB1Gw3aR/Wgw==",
+  "dgSpecHash": "GkFIlsdZcFur7rpIwInDDFrXH7EQu0DubpATnYWnMobP/X61z3y8j9JPo1ay3dZstarfuUqilhJxeLbOuZdB6A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\fyrca\\source\\repos\\InfoPlus\\InfoPlus.csproj",
+  "projectFilePath": "D:\\Project\\InfoPlus\\InfoPlus\\InfoPlus.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fyrca\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.6\\microsoft.aspnet.webapi.client.5.2.6.nupkg.sha512",
     "C:\\Users\\fyrca\\.nuget\\packages\\microsoft.aspnetcore\\2.1.1\\microsoft.aspnetcore.2.1.1.nupkg.sha512",
